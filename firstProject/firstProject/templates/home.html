@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    Hola página principal
+    <ul>
+        {% for number in numbers %}
+            <li>{{ number.nombre }} - {{ number.descripcion }}</li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
