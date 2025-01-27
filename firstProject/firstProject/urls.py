@@ -1,4 +1,5 @@
-import view
+import firstProject.view as view
+from firstProject.view import HomePageView, AboutPageView, BasePageView 
 
 """
 URL configuration for firstProject project.
@@ -21,5 +22,7 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', view.getHi, name="regiber")
+    path('home/', HomePageView.as_view(), name="home"),
+    path('about/', AboutPageView.as_view(), name='about'),
+    path('base/', BasePageView.as_view(), name='base')
 ]
