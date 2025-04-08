@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Escribe la Letra</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background-color: #f9fbe7;
+            text-align: center;
+            padding: 40px;
+        }
+
+        img {
+            width: 200px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .palabra {
+            font-size: 40px;
+            letter-spacing: 10px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            font-size: 30px;
+            width: 60px;
+            text-align: center;
+            border: 2px solid #9ccc65;
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 20px;
+            font-size: 24px;
+            background-color: #aed581;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        #mensaje {
+            margin-top: 30px;
+            font-size: 28px;
+            color: #33691e;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Aprende a Escribir!</h1>
+
+    <img id="imagen" src="{% static 'images/abeja.jpg' %}" alt="abeja">
+
+    <div class="palabra" id="palabraMostrada">_ B E J A</div>
+
+    <input type="text" maxlength="1" id="letraInput" autofocus>
+    <br>
+    <button onclick="verificarLetra()">Verificar</button>
+
+    <p id="mensaje"></p>
+
+    <script>
+        const palabras = [
+            { letra: "A", palabra: "_ B E J A", completa: "ABEJA", imagen: "{% static 'images/abeja.jpg' %}" },
+            { letra: "O", palabra: "_ S O", completa: "OSO", imagen: "{% static 'images/oso.jpg' %}" },
+            { letra: "U", palabra: "_ V A", completa: "UVA", imagen: "{% static 'images/uva.jpg' %}" },
+            { letra: "I", palabra: "_ G U A N A", completa: "IGUANA", imagen: "{% static 'images/iguana.jpg' %}" }
+        ];
+
+        let index = 0;
+
+        function mostrarPalabra() {
+            document.getElementById("letraInput").value = "";
+            document.getElementById("palabraMostrada").textContent = palabras[index].palabra;
+            document.getElementById("imagen").src = palabras[index].imagen;
+            document.getElementById("mensaje").textContent = "";
+        }
+
+        function verificarLetra() {
+            const entrada = document.getElementById("letraInput").value.toUpperCase();
+            const mensaje = document.getElementById("mensaje");
+            const letraCorrecta = palabras[index].letra;
+
+            if (entrada === letraCorrecta) {
+                mensaje.textContent = `¡Muy bien! La palabra es ${palabras[index].completa}.`;
+                mensaje.style.color = "#2e7d32";
+                new Audio("{% static 'audio/bien_hecho.mp3' %}").play();
+
+                setTimeout(() => {
+                    index++;
+                    if (index < palabras.length) {
+                        mostrarPalabra();
+                    } else {
+                        mensaje.textContent = "¡Felicidades! Completaste todas las palabras.";
+                        document.querySelector("button").disabled = true;
+                        document.getElementById("letraInput").disabled = true;
+                        document.getElementById("imagen").style.display = "none";
+                        document.getElementById("palabraMostrada").style.display = "none";
+                    }
+                }, 2000);
+            } else {
+                mensaje.textContent = "Intenta otra letra.";
+                mensaje.style.color = "#c62828";
+                new Audio("{% static 'audio/intenta_otro_vez.mp3' %}").play();
+            }
+        }
+
+        // Mostrar la primera palabra al cargar
+        mostrarPalabra();
+    </script>
+</body>
+</html>

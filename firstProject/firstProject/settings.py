@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import os
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,7 +27,11 @@ SECRET_KEY = 'django-insecure-c0ou_optk4l7&09pf$xvlns!iwnxw7z$x!1#tb=0q4odeasnzt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+LOGIN_REDIRECT_URL = '/home/'
+LOGIN_URL = '/login/'
+
+ALLOWED_HOSTS = ['*']
+
 
 
 # Application definition
@@ -56,7 +62,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR/'firstProject/templates'
+            BASE_DIR/'firstProject/templates',
+            os.path.join(BASE_DIR, 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -71,6 +78,13 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'firstProject.wsgi.application'
+ASGI_APPLICATION = 'firstProject.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
+    }
+}
 
 
 # Database

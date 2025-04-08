@@ -1,1 +1,1 @@
-from .carrera import Carrera
+from .Leccion import Leccion

@@ -1,5 +1,6 @@
 import firstProject.view as view
-from firstProject.view import HomePageView, AboutPageView, BasePageView 
+from django.contrib.auth.views import LogoutView
+from .view import activity_detail, activity_list, create_activity, juego_escribir
 
 """
 URL configuration for firstProject project.
@@ -19,10 +20,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth import views as auth_views  # Corregido
+
+
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('home/', HomePageView.as_view(), name="home"),
-    path('about/', AboutPageView.as_view(), name='about'),
-    path('base/', BasePageView.as_view(), name='base')
+    path("list/", activity_list, name="activity_list"),
+    path("juego_escribir", juego_escribir, name="juego_escribir"),
+    path('activity/<int:activity_id>/', activity_detail, name='activity_detail'),
+        path('create/', create_activity, name='create_activity'),
 ]

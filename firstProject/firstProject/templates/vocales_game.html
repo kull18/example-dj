@@ -1,0 +1,85 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Juego de Vocales</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            color: #ff6347;
+            margin-top: 20px;
+        }
+
+        p {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .vocales {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .vocal {
+            background-color: #fff8dc;
+            border: 3px dashed #ffa07a;
+            border-radius: 15px;
+            padding: 15px;
+            width: 170px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .vocal:hover {
+            transform: scale(1.1);
+            background-color: #ffe4e1;
+        }
+
+        .vocal img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .vocal p {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ff4500;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Aprende las Vocales!</h1>
+    <p>Haz clic en una imagen para escuchar las vocales.</p>
+
+    <div class="vocales">
+        {% for vocal in "AEIOU" %}
+            <div class="vocal" onclick="reproducirSonido()">
+                <img src="{% static 'images/'|add:vocal|add:'.jpg' %}" alt="{{ vocal }}">
+                <p>{{ vocal }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        const audio = new Audio("{% static 'audio/vocales.mp3' %}");
+        function reproducirSonido() {
+            audio.currentTime = 0;  // Reinicia el audio si se hace clic varias veces
+            audio.play();
+        }
+    </script>
+</body>
+</html>

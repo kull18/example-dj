@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ activity.title }}</title>
+</head>
+<body>
+    <h1>{{ activity.title }}</h1>
+    <p>{{ activity.description }}</p>
+
+    {% if activity.image %}
+        <img src="{{ activity.image.url }}" alt="Imagen de la actividad" />
+    {% endif %}
+
+    {% if activity.sound_file %}
+        <audio controls>
+            <source src="{{ activity.sound_file.url }}" type="audio/mpeg">
+            Tu navegador no soporta el elemento de audio.
+        </audio>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Enviar Respuesta</button>
+    </form>
+</body>
+</html>

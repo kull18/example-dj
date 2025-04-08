@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultado</title>
+</head>
+<body>
+    <h1>Resultado</h1>
+    {% if is_correct %}
+        <p>¡Correcto! Has respondido bien.</p>
+    {% else %}
+        <p>Incorrecto. Intenta nuevamente.</p>
+    {% endif %}
+
+    <p><a href="{% url 'activity_detail' activity.pk %}">Volver a intentarlo</a></p>
+</body>
+</html>

@@ -1,6 +1,4 @@
-from django.contrib import  admin
-from .models import Carrera
+from django.contrib import admin
+from .models.Activity import Activity 
 
-@admin.register(Carrera)
-class CarreraAdmin(admin.ModelAdmin):
-    list_display=("nombre","descripcion")
+admin.site.register(Activity)
