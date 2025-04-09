@@ -27,10 +27,15 @@ def activity_list(request):
 def juego_escribir(request):
     return render(request, 'juego_escribir.html')
 
+
 def activity_detail(request, activity_id):
     activity = get_object_or_404(Activity, id=activity_id)
+    
     if activity.name.lower() == "vocales":  # Cambié "abecedario" por "vocales"
         return render(request, 'vocales_game.html')
+    elif activity.name.lower() == "juego_escribir":  # Corregido "else if" por "elif"
+        return render(request, 'juego_escribir.html')
+    
     return render(request, 'activity_detail.html', {'activity': activity})
 
 
@@ -48,3 +53,6 @@ def create_activity(request):
 
 def count_game(request):
     return render(request, 'count_game.html')
+
+def formar_palabra(request):
+    return render(request, 'formar_palabra.html')
