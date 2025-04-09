@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego de Relacionar Palabras con Imágenes</title>
+    {% load static %}
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background-color: #f1f8e9;
+            text-align: center;
+        }
+        h1 {
+            color: #33691e;
+        }
+        .contenedor {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 30px; /* antes 50px */
+        }
+        .columna-palabras, .columna-imagenes {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* antes 20px */
+        }
+        .palabra {
+            padding: 10px 20px;
+            background-color: #fff9c4;
+            border: 2px solid #fbc02d;
+            border-radius: 10px;
+            cursor: grab;
+            font-size: 20px;
+        }
+        .imagen-objeto {
+            border: 2px dashed #8bc34a;
+            border-radius: 10px;
+            padding: 10px;
+            background-color: #dcedc8;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .imagen-objeto img {
+            max-width: 100px;
+            max-height: 100px;
+        }
+        button {
+            margin-top: 30px;
+            padding: 10px 25px;
+            font-size: 18px;
+            background-color: #689f38;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #33691e;
+        }
+    </style>
+</head>
+<body>
+    <h1>¡Relaciona las palabras con su imagen!</h1>
+
+    <div class="contenedor">
+        <div class="columna-palabras" id="columna-palabras"></div>
+        <div class="columna-imagenes" id="columna-imagenes"></div>
+    </div>
+
+    <button onclick="verificarRespuestas()">Verificar</button>
+
+    <audio id="audioCorrecto" src="https://www.soundjay.com/human/sounds/applause-8.mp3"></audio>
+    <audio id="audioIncorrecto" src="https://www.soundjay.com/button/sounds/button-10.mp3"></audio>
+
+    <script>
+        const palabras = ["manzana", "auto", "pelota", "flor", "estrella", "lápiz"];
+        const imagenes = [
+            { palabra: "manzana", url: "{% static 'images/manzana.png' %}" },
+            { palabra: "auto", url: "{% static 'images/auto.png' %}" },
+            { palabra: "pelota", url: "{% static 'images/pelota.png' %}" },
+            { palabra: "flor", url: "{% static 'images/flor.png' %}" },
+            { palabra: "estrella", url: "{% static 'images/estrella.png' %}" },
+            { palabra: "lápiz", url: "{% static 'images/lapiz.png' %}" }
+        ];
+
+        function mezclar(array) {
+            return array.sort(() => Math.random() - 0.5);
+        }
+
+        function cargarJuego() {
+            const columnaPalabras = document.getElementById("columna-palabras");
+            const columnaImagenes = document.getElementById("columna-imagenes");
+
+            const palabrasMezcladas = mezclar([...palabras]);
+
+            palabrasMezcladas.forEach((palabra, index) => {
+                const div = document.createElement("div");
+                div.className = "palabra";
+                div.textContent = palabra;
+                div.setAttribute("draggable", "true");
+                div.setAttribute("id", `palabra-${index}`);
+                div.ondragstart = arrastrar;
+                columnaPalabras.appendChild(div);
+            });
+
+            imagenes.forEach((item, index) => {
+                const contenedor = document.createElement("div");
+                contenedor.className = "imagen-objeto";
+                contenedor.ondrop = soltar;
+                contenedor.ondragover = permitirSoltar;
+                contenedor.setAttribute("data-correcta", item.palabra);
+
+                const img = document.createElement("img");
+                img.src = item.url;
+                img.alt = item.palabra;
+                contenedor.appendChild(img);
+
+                columnaImagenes.appendChild(contenedor);
+            });
+        }
+
+        function arrastrar(event) {
+            event.dataTransfer.setData("text", event.target.textContent.trim());
+        }
+
+        function permitirSoltar(event) {
+            event.preventDefault();
+        }
+
+        function soltar(event) {
+            event.preventDefault();
+            const palabra = event.dataTransfer.getData("text");
+            event.target.innerHTML = palabra;
+        }
+
+        function verificarRespuestas() {
+            const zonas = document.querySelectorAll(".imagen-objeto");
+            let correctas = 0;
+
+            zonas.forEach(zona => {
+                const respuesta = zona.textContent.trim().toLowerCase();
+                const correcta = zona.dataset.correcta.toLowerCase();
+
+                if (respuesta === correcta) {
+                    correctas++;
+                }
+            });
+
+            if (correctas === zonas.length) {
+                document.getElementById("audioCorrecto").play();
+                alert("¡Muy bien! Has acertado todas.");
+            } else {
+                document.getElementById("audioIncorrecto").play();
+                alert("Hay errores. Intenta de nuevo.");
+            }
+        }
+
+        window.onload = cargarJuego;
+    </script>
+</body>
+</html>

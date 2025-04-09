@@ -56,3 +56,9 @@ def count_game(request):
 
 def formar_palabra(request):
     return render(request, 'formar_palabra.html')
+
+
+def juego_relacionar(request):
+    actividades = Activity.objects.all().order_by('?')
+    return render(request, 'relacionar_game.html', {'actividades': actividades})
+
