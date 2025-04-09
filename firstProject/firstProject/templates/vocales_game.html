@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Juego de Vocales</title>
     <style>
@@ -61,25 +62,51 @@
         }
     </style>
 </head>
+
 <body>
     <h1>¡Aprende las Vocales!</h1>
     <p>Haz clic en una imagen para escuchar las vocales.</p>
 
     <div class="vocales">
         {% for vocal in "AEIOU" %}
-            <div class="vocal" onclick="reproducirSonido()">
-                <img src="{% static 'images/'|add:vocal|add:'.jpg' %}" alt="{{ vocal }}">
-                <p>{{ vocal }}</p>
-            </div>
+        <div class="vocal" onclick="reproducirSonido('{{ vocal }}')">
+            <img src="{% static 'images/'|add:vocal|add:'.jpg' %}" alt="{{ vocal }}">
+            <p>{{ vocal }}</p>
+        </div>
         {% endfor %}
     </div>
 
     <script>
-        const audio = new Audio("{% static 'audio/vocales.mp3' %}");
-        function reproducirSonido() {
+        function reproducirSonido(vocal) {
+            console.log("vocal", vocal);
+            let archivoAudio = "";
+
+            switch (vocal) {
+                case "A":
+                    archivoAudio = "{% static 'audio/a.mp3' %}";
+                    break;
+                case "E":
+                    archivoAudio = "{% static 'audio/e.mp3' %}";
+                    break;
+                case "I":
+                    archivoAudio = "{% static 'audio/i.mp3' %}";
+                    break;
+                case "O":
+                    archivoAudio = "{% static 'audio/o.mp3' %}";
+                    break;
+                case "U":
+                    archivoAudio = "{% static 'audio/u.mp3' %}";
+                    break;
+                default:
+                    console.log("No se encontró el archivo de audio para esta vocal.");
+                    return;
+            }
+
+            const audio = new Audio(archivoAudio);
             audio.currentTime = 0;  // Reinicia el audio si se hace clic varias veces
             audio.play();
         }
     </script>
 </body>
+
 </html>

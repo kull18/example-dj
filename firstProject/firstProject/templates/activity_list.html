@@ -62,6 +62,7 @@
     <ul>
         {% for activity in activities %}
             <li>
+                <img src={{ activity.image }}>
                 <a href="{% url 'activity_detail' activity.pk %}">{{ activity.name }}</a>
             </li>
         {% endfor %}
