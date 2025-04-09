@@ -53,3 +53,6 @@ def create_activity(request):
 
 def count_game(request):
     return render(request, 'count_game.html')
+
+def formar_palabra(request):
+    return render(request, 'formar_palabra.html')

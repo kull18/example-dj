@@ -1,6 +1,6 @@
 import firstProject.view as view
 from django.contrib.auth.views import LogoutView
-from .view import activity_detail, activity_list, create_activity, juego_escribir, count_game  
+from .view import activity_detail, activity_list, create_activity, juego_escribir, count_game  , formar_palabra
 
 """
 URL configuration for firstProject project.
@@ -31,4 +31,5 @@ urlpatterns = [
     path('activity/<int:activity_id>/', activity_detail, name='activity_detail'),
         path('create/', create_activity, name='create_activity'),
     path("contar/", count_game, name="count_game"),
+     path("formar_palabra/", formar_palabra, name="formar_palabra"),
 ]
