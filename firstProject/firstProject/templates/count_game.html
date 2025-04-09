@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contemos Objetos</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive;
+            background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+            text-align: center;
+            padding: 40px;
+            color: #333;
+        }
+
+        h1 {
+            color: #0d47a1;
+            font-size: 42px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px #bbdefb;
+        }
+
+        .imagenes {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .iconito {
+            width: 100px;
+            height: auto;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.3));
+        }
+
+        .iconito:hover {
+            transform: scale(1.2);
+            filter: brightness(1.1);
+        }
+
+        input {
+            font-size: 28px;
+            width: 100px;
+            text-align: center;
+            border: 2px solid #64b5f6;
+            border-radius: 10px;
+            padding: 5px;
+            margin-top: 10px;
+            box-shadow: 1px 1px 6px rgba(100, 181, 246, 0.6);
+        }
+
+        button {
+            margin-top: 20px;
+            font-size: 24px;
+            background-color: #2196f3;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 2px 2px 10px rgba(33, 150, 243, 0.4);
+        }
+
+        button:hover {
+            background-color: #1976d2;
+            transform: scale(1.05);
+        }
+
+        #mensaje {
+            margin-top: 30px;
+            font-size: 30px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .finalizado {
+            font-size: 32px;
+            color: #1b5e20;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <h1>¿Cuántos objetos ves?</h1>
+
+    <div id="contenedor-imagen" class="imagenes"></div>
+
+    <div>
+        <input type="number" id="respuesta" min="0" autofocus>
+        <br>
+        <button onclick="verificarCantidad()">Verificar</button>
+    </div>
+
+    <p id="mensaje"></p>
+
+    <script>
+        const ejercicios = [
+            { cantidad: 3, imagen: "{% static 'images/manzana.png' %}" },
+            { cantidad: 5, imagen: "{% static 'images/estrella.png' %}" },
+            { cantidad: 2, imagen: "{% static 'images/pelota.png' %}" },
+            { cantidad: 4, imagen: "{% static 'images/flor.png' %}" }
+        ];
+
+        let index = 0;
+
+        function mostrarEjercicio() {
+            const ejercicio = ejercicios[index];
+            const contenedor = document.getElementById("contenedor-imagen");
+            contenedor.innerHTML = "";
+
+            for (let i = 0; i < ejercicio.cantidad; i++) {
+                const img = document.createElement("img");
+                img.src = ejercicio.imagen;
+                img.alt = "objeto";
+                img.className = "iconito";
+                contenedor.appendChild(img);
+            }
+
+            document.getElementById("respuesta").value = "";
+            document.getElementById("mensaje").textContent = "";
+        }
+
+        function verificarCantidad() {
+            const respuesta = parseInt(document.getElementById("respuesta").value);
+            const mensaje = document.getElementById("mensaje");
+            const correcta = ejercicios[index].cantidad;
+
+            if (respuesta === correcta) {
+                mensaje.textContent = `¡Correcto! Hay ${correcta} objetos.`;
+                mensaje.style.color = "#2e7d32";
+                new Audio("{% static 'audio/bien_hecho.mp3' %}").play();
+
+                setTimeout(() => {
+                    index++;
+                    if (index < ejercicios.length) {
+                        mostrarEjercicio();
+                    } else {
+                        mensaje.innerHTML = "<span class='finalizado'>¡Muy bien! Completaste todos los ejercicios 🎉</span>";
+                        document.querySelector("button").disabled = true;
+                        document.getElementById("respuesta").disabled = true;
+                        document.getElementById("contenedor-imagen").innerHTML = "";
+                    }
+                }, 2000);
+            } else {
+                mensaje.textContent = "Intenta contar de nuevo.";
+                mensaje.style.color = "#c62828";
+                new Audio("{% static 'audio/intenta_otro_vez.mp3' %}").play();
+            }
+        }
+
+        mostrarEjercicio();
+    </script>
+</body>
+</html>

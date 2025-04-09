@@ -49,3 +49,7 @@ def create_activity(request):
     else:
         form = ActivityForm()
     return render(request, 'create_activity.html', {'form': form})
+
+
+def count_game(request):
+    return render(request, 'count_game.html')
